@@ -1,0 +1,4 @@
+---
+- package:
+    name: nrpe
+    state: latest

@@ -1,0 +1,16 @@
+---
+- user:
+    name: noc
+    state: present
+- file:
+    path: /home/noc/.ssh/
+    owner: noc
+    group: noc
+    mode: 600
+    state: directory
+- copy:
+    src: authorized_keys
+    dest: /home/noc/.ssh/authorized_keys
+    mode: 600
+    owner: noc
+    group: noc

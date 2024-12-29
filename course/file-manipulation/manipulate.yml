@@ -1,0 +1,35 @@
+---
+- hosts: qa_servers
+  become: yes
+  vars:
+    file_checksum: "{{ lookup('file', '/home/ansible/checksum.txt') }}"
+  tasks:
+    - name: download file and verify checksum
+      get_url:
+        url: http://software.xyzcorp.com/enigma.tgz
+        dest: /tmp
+        checksum: "{{ file_checksum }}"
+    - name: extract the file enigma.tgz
+      unarchive:
+        dest: /opt/
+        src: /tmp/enigma.tgz
+        remote_src: yes
+    - name: replace texts
+      lineinfile:
+        path: /opt/enigma/details.txt
+        regexp: "DEPLOY_CODE"
+        line: CODE_RED
+    - name: change ownership of diretory /opt/enigma/secret/
+      file:
+        path: /opt/enigma/secret
+        group: protected
+        recurse: true
+        state: directory
+
+- hosts: all
+  become: yes
+  tasks:
+    - name: delete file deployment-passwords.txt from all "/etc/hosts"
+      file:
+        state: absent
+        path: /opt/enigma/tmp/deployment-passwords.txt

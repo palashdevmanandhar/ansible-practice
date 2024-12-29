@@ -1,0 +1,23 @@
+---
+- hosts: web
+  become: yes
+  gather_facts: no
+  tasks:
+    - name: install httpd on web group
+      yum:
+        name: httpd
+        state: latest
+    - name: start the httpd service
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+    - name: retieve website repo
+      get_url:
+        url: http://repo.example.com/website.tgz
+        dest: /tmp/website.tgz
+    - name: unarchive the website
+      unarchive:
+        remote_src: yes
+        src: /tmp/website.tgz
+        dest: /var/www/html

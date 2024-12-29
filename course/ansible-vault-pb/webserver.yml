@@ -1,0 +1,44 @@
+---
+- hosts: webservers
+  become: yes
+  vars_files:
+    - /home/ansible/confidential
+  tasks:
+    - name: install httpd
+      package:
+        name: httpd
+        state: present
+      notify: httpd install
+      tags:
+        - base-install
+    - name: confiure vhost
+      template:
+        src: /home/ansible/vhost.conf.j2
+        dest: /etc/httpd/conf.d/vhost.conf
+      notify: httpd install
+      tags:
+        - vhost
+    - name: confiure site auth
+      template:
+        src: /home/ansible/htpasswd.j2
+        dest: /etc/httpd/conf/htpasswd
+      notify: httpd install
+      tags:
+        - vhost        
+    - name: run data job
+      command: /opt/data-job.sh
+      async: 600
+      poll: 0
+      tags:
+        - data-job       
+  handlers:
+    - name: start and enable httpd
+      service:
+        name: httpd
+        enabled: yes
+        state: restarted
+      listen: httpd install
+
+    - name: run data job
+      shell:
+        cmd: "bash /opt/data-job.sh"

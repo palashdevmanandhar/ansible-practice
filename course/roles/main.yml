@@ -1,0 +1,12 @@
+---
+- name: deploy motd template
+  import_tasks: deploy_template.yml
+
+- name: intall nagios
+  import_tasks: install_nagios.yml
+
+- name: add entry to /etc/hosts
+  import_tasks: configure_hosts.yml  
+    
+- name: deploy noc user
+  import_tasks: noc_user.yml
