@@ -1,0 +1,19 @@
+- name: create noc user
+  user:
+    name: noc
+
+- name: create the .ssh folder for noc user
+  file:
+    path: /home/noc/.ssh
+    owner: noc
+    group: noc
+    mode: 700
+    state: directory
+
+- name: copy authorized keys for the noc user
+  copy:
+    src: authorized_keys
+    dest: /home/noc/.ssh/authorized_keys
+    owner: noc
+    group: noc
+    mode: 600

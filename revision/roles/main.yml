@@ -1,0 +1,9 @@
+---
+-  name: config motd template
+   ansible.builtin.import_tasks: config-template.yml
+
+-  name: install nagios and configure hosts file 
+   ansible.builtin.import_tasks: nagios.yml
+
+-  name: create user and transfer keys
+   import_tasks: noc.yml         

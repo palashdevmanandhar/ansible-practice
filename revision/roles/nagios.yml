@@ -1,0 +1,9 @@
+- name: install nagios
+  package:
+    name: nrpe
+    state: latest
+
+- name: configure localhost entry
+  lineinfile:
+    line: "10.0.1.250 nagios.example.com"
+    path: /etc/hosts  

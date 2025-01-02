@@ -1,0 +1,9 @@
+---
+- hosts: workstation
+  become: yes
+  gather_facts: no
+  tasks:
+  - name: install git on remote hosts
+    package:
+      name: git
+      state: latest

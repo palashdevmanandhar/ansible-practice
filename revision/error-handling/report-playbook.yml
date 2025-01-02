@@ -1,0 +1,25 @@
+---
+-  hosts: localhost
+   become: yes
+   tasks:
+     - block:
+         - name: pull file from web source
+           get_url:
+             url: http://apps.l33t.com/transaction_list
+             dest: /home/ansible/transaction_list
+         - name: file downloaded message display
+           debug:
+             msg: "File downloaded"     
+         - name: replace BLANKLINE my new line
+           replace:
+             path: /home/ansible/transaction_list 
+             regexp: '#BLANKLINE"
+             replace: "\n"     
+       rescue:
+         - name: print error message
+           debug:
+             msg: "name: pull file from web source"
+       always:
+         - name: print completion message
+           debug:
+             msg: "Attempt Completed"                   

@@ -1,0 +1,23 @@
+---
+-  hosts: web
+   become: yes
+   tasks:
+   -  name: install httpd
+      package:
+        name: httpd
+        state: latest
+   -  name: enable httpd
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+   -  name: download index.html page 
+      get_url:
+        url: http://repo.example.com/website.tgz
+        dest: /tmp/website.tgz
+   -  name: extract files from downloaded zip files
+      unarchive:
+        src: /tmp/website.tgz
+        dest: /var/www/html
+        remote_src: yes   
+                   
